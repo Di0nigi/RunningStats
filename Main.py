@@ -13,8 +13,8 @@ from google_drive_downloader import GoogleDriveDownloader as gdd
 
 
 path="D:\dionigi\Documents\Python scripts\RunningStats\dataTest\image1.jpeg"
-fileName='RunningStats.xlsx'
-dataframe = pd.read_excel(fileName)
+fileName='RunningStat.xlsx'
+dataframe1 = pd.read_excel(fileName,dtype={"Distance":str,"Time":str, "Min/KM":str, "Kcal":str,	"Date":str})
 
 
 
@@ -26,12 +26,12 @@ def main():
     formatted=format(Stats,currentDate)
     getData()
     save(formatted)
-    getData()
+    #getData()
     
     
 
 
-    return formatted
+    return #formatted
 
 
 
@@ -86,7 +86,7 @@ def extract(path):
 def format(l,date):
     i=-1
     l.append(date)
-    d={"Distance":"","Time":"", "Min/KM":"",	"Kcal":"",	"Date":""}
+    d={"Distance":"","Time":"", "Min/KM":"", "Kcal":"",	"Date":""}
     for it in d:
         i+=1
         d[it]=l[i]
@@ -97,21 +97,22 @@ def format(l,date):
     return d
 
 def save(d):
-    #l=["Distance","Time", "Min/KM",	"Kcal"	"Date"]
-    #d= {key: st for st in s for key in l}
-    #print(d)
-    #dataframe.append(d,ignore_index=True)
-    
-    for key in d:
-        dataframe[key].update(d[key])
-        dataframe.to_excel(fileName)
-
-
+    data=[]
+    col=[x for x in d]
+    for ind in dataframe1.index:
+        l=[]
+        for x in list(dataframe1.iloc[ind,:]):
+            l.append(x)
+        data.append(l)
+    data.append([d[x] for x in d])
+        
+    dataframe2= pd.DataFrame(data,columns=col)
+    dataframe2.to_excel(fileName)
 
     return
 
 def getData():
-    print(dataframe)
+    print(dataframe1)
     #print(dataframe["Date"])
     return
 
