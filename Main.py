@@ -2,24 +2,36 @@ import pytesseract
 import cv2
 import numpy as np
 import os
+import pandas as pd
+import datetime
+from google_drive_downloader import GoogleDriveDownloader as gdd
 
-r=""
-points=[[7, 807], [5, 1188], [908, 1180], [901, 814]]
+#gdd.DOWNLOAD_URL='https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link'
+#gdd.download_file_from_google_drive(file_id='1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5',
+                                    #dest_path='D:\dionigi\Documents\Python scripts\RunningStats\dataTest\_testdrive01',
+                                    #unzip=False,overwrite=True)
+
 
 path="D:\dionigi\Documents\Python scripts\RunningStats\dataTest\image1.jpeg"
+fileName='RunningStats.xlsx'
+dataframe = pd.read_excel(fileName)
 
-#r= pytesseract.image_to_string(path)
-
-#r=list(r)
 
 
 def main():
+    currentDate= "10.10.10"
+    
     resized=resize(path)
     Stats=extract(resized)
+    formatted=format(Stats,currentDate)
+    getData()
+    save(formatted)
+    getData()
+    
     
 
 
-    return Stats
+    return formatted
 
 
 
@@ -50,7 +62,7 @@ def resize(path):
     output_img = cv2.warpPerspective(img, H, (800, 500))
     final=os.path.join(Vpath,flush,name)
     b=cv2.imwrite(final,img=output_img)
-    print(b)
+    #print(b)
 
     return final
 
@@ -71,18 +83,39 @@ def extract(path):
 
     return l
 
-def format(s):
-    str=""
+def format(l,date):
+    i=-1
+    l.append(date)
+    d={"Distance":"","Time":"", "Min/KM":"",	"Kcal":"",	"Date":""}
+    for it in d:
+        i+=1
+        d[it]=l[i]
+    
 
-    return
 
-def save(s):
+
+    return d
+
+def save(d):
+    #l=["Distance","Time", "Min/KM",	"Kcal"	"Date"]
+    #d= {key: st for st in s for key in l}
+    #print(d)
+    #dataframe.append(d,ignore_index=True)
+    
+    for key in d:
+        dataframe[key].update(d[key])
+        dataframe.to_excel(fileName)
+
+
+
     return
 
 def getData():
+    print(dataframe)
+    #print(dataframe["Date"])
     return
 
 
 
 
-main()
+print(main())
