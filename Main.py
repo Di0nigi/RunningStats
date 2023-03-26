@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import os
 import pandas as pd
-import datetime
+from datetime import date
 from google_drive_downloader import GoogleDriveDownloader as gdd
 
 #gdd.DOWNLOAD_URL='https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link'
@@ -14,13 +14,13 @@ from google_drive_downloader import GoogleDriveDownloader as gdd
 
 path="D:\dionigi\Documents\Python scripts\RunningStats\dataTest\image1.jpeg"
 fileName='RunningStat.xlsx'
-dataframe1 = pd.read_excel(fileName,dtype={"Distance":str,"Time":str, "Min/KM":str, "Kcal":str,	"Date":str})
+dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,	"Date":str})
 
 
 
 def main():
-    currentDate= "10.10.10"
-    
+    currentDate= date.today().strftime("%d-%m-%Y")
+    #currentDate="24.03.23"
     resized=resize(path)
     Stats=extract(resized)
     formatted=format(Stats,currentDate)
@@ -84,16 +84,13 @@ def extract(path):
     return l
 
 def format(l,date):
+    #l.insert(0,str(dataframe1.iloc.ndim))
     i=-1
     l.append(date)
     d={"Distance":"","Time":"", "Min/KM":"", "Kcal":"",	"Date":""}
     for it in d:
         i+=1
         d[it]=l[i]
-    
-
-
-
     return d
 
 def save(d):
@@ -107,8 +104,8 @@ def save(d):
     data.append([d[x] for x in d])
         
     dataframe2= pd.DataFrame(data,columns=col)
-    dataframe2.to_excel(fileName)
-
+    dataframe2.to_excel(fileName,index=False)
+    #dataframe1=dataframe2
     return
 
 def getData():
