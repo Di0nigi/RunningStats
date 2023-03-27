@@ -3,37 +3,46 @@ import cv2
 import numpy as np
 import os
 import pandas as pd
+import gdown
 from datetime import date
-from google_drive_downloader import GoogleDriveDownloader as gdd
-
-#gdd.DOWNLOAD_URL='https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link'
-#gdd.download_file_from_google_drive(file_id='1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5',
-                                    #dest_path='D:\dionigi\Documents\Python scripts\RunningStats\dataTest\_testdrive01',
-                                    #unzip=False,overwrite=True)
 
 
-path="D:\dionigi\Documents\Python scripts\RunningStats\dataTest\image1.jpeg"
+
+path="D:\dionigi\Documents\Python scripts\RunningStats\RunningStats"
+url="https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link"
 fileName='RunningStat.xlsx'
 dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,	"Date":str})
 
 
 
+
 def main():
-    currentDate= date.today().strftime("%d-%m-%Y")
-    #currentDate="24.03.23"
-    resized=resize(path)
+    currentDate= date.today().strftime("%d.%m.%Y")
+    download()
+    imgePath=getFile(path)
+    resized=resize(imgePath)
     Stats=extract(resized)
     formatted=format(Stats,currentDate)
     getData()
     save(formatted)
-    #getData()
+    getData()
+    flush("dataFlush")
     
     
 
 
     return #formatted
 
+def download():
+   flush("D:\dionigi\Documents\Python scripts\RunningStats\RunningStats")
+   f= gdown.download_folder(url)
+   return 
 
+def getFile(path):
+    l=os.listdir(path)
+    f=l[-1]
+    p= os.path.join(path,f)
+    return p
 
 def getVpath(path):
     l=[]
@@ -53,7 +62,7 @@ def resize(path):
     Vpath=p[1]
     img= cv2.imread(path)
    # src_points=[[7, 807], [5, 1188], [908, 1180], [901, 814]]
-    src_float = np.array([[7, 807], [5, 1188], [908, 1180], [901, 814]], dtype=np.float32)
+    src_float = np.array([[11, 963], [6, 1389], [1072, 1383], [1061, 954]], dtype=np.float32)
     dst_points = np.array([[0,0], # top left
                     [0,500], # bottom right
                     [800,500], # bottom left
@@ -113,6 +122,11 @@ def getData():
     #print(dataframe["Date"])
     return
 
+def flush(path):
+    for f in os.listdir(path):
+        os.remove(os.path.join(path, f))
+
+    return
 
 
 
