@@ -14,6 +14,7 @@ url="https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?us
 fileName='RunningStat.xlsx'
 dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,"Date":str})
 new=False
+print()
 
 
 def main():
