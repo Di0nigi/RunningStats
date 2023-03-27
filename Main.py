@@ -4,6 +4,7 @@ import numpy as np
 import os
 import pandas as pd
 import gdown
+import matplotlib.pyplot as plt
 from datetime import date
 
 
@@ -11,21 +12,19 @@ from datetime import date
 path="D:\dionigi\Documents\Python scripts\RunningStats\RunningStats"
 url="https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link"
 fileName='RunningStat.xlsx'
-dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,	"Date":str})
-
-
+dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,"Date":str})
+new=False
 
 
 def main():
     currentDate= date.today().strftime("%d.%m.%Y")
-    download()
+   # download()
     imgePath=getFile(path)
     resized=resize(imgePath)
     Stats=extract(resized)
     formatted=format(Stats,currentDate)
-    getData()
-    save(formatted)
-    getData()
+    df=save(formatted)
+    graphIt(df)
     flush("dataFlush")
     
     
@@ -79,6 +78,7 @@ def extract(path):
     r=pytesseract.image_to_string(path)
     acc=[",",":"]
     l=[]
+    ret=[]
     s=""
     for x in r:
         if x.isalnum() or x in acc:
@@ -88,8 +88,7 @@ def extract(path):
                 l.append(s)
                 s=""
     l=list(filter(None,l))
-    
-
+        
     return l
 
 def format(l,date):
@@ -110,17 +109,31 @@ def save(d):
         for x in list(dataframe1.iloc[ind,:]):
             l.append(x)
         data.append(l)
-    data.append([d[x] for x in d])
+    if new:
+        data.append([d[x] for x in d])
         
     dataframe2= pd.DataFrame(data,columns=col)
     dataframe2.to_excel(fileName,index=False)
     #dataframe1=dataframe2
-    return
+    return dataframe2
 
-def getData():
-    print(dataframe1)
-    #print(dataframe["Date"])
-    return
+def getData(df,t):
+    l=[]
+    ret=[]
+    for x in df[t]:
+        l.append(x)
+    print(l)
+    for ch in l:
+        if "," in ch:
+            s=ch.replace(",",".")
+            ret.append(s)
+        else:
+            ret.append(ch)
+    return ret
+
+def parseTime(s):
+    st=f"{s[3]}{s[4]}.{s[6]}{s[7]}"
+    return float(st)
 
 def flush(path):
     for f in os.listdir(path):
@@ -128,6 +141,26 @@ def flush(path):
 
     return
 
+
+
+
+def graphIt(df):
+    #fig= plt.figure()
+    Xaxis=getData(df,"Date")
+    Y1axis=[float(x) for x in getData(df,"Distance")]
+    Y2axis=[parseTime(x) for x in getData(df,"Time")]
+    fig, (g1, g2) = plt.subplots(2)
+    fig.suptitle('Running Stats')
+    fig.set_figwidth(9)
+    fig.set_figheight(7)
+    g1.bar(Xaxis,Y1axis)
+    g2.bar(Xaxis,Y2axis)
+    plt.show()
+
+    
+
+
+    return
 
 
 print(main())
