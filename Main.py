@@ -9,18 +9,19 @@ from datetime import date
 
 
 
-path="D:\dionigi\Documents\Python scripts\RunningStats\RunningStats"
+path1="D:\dionigi\Documents\Python scripts\RunningStats\RunningStats"
 url="https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link"
-fileName='RunningStat.xlsx'
+fileName='D:\dionigi\Documents\Python scripts\RunningStats\RunningStat.xlsx'
 dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,"Date":str})
 new=False
-print()
+print("Working")
 
 
 def main():
     currentDate= date.today().strftime("%d.%m.%Y")
-   # download()
-    imgePath=getFile(path)
+    if new:
+        download()
+    imgePath=getFile(path1)
     resized=resize(imgePath)
     Stats=extract(resized)
     formatted=format(Stats,currentDate)
