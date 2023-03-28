@@ -9,9 +9,9 @@ from datetime import date
 
 
 
-path1="D:\dionigi\Documents\Python scripts\RunningStats\RunningStats"
-url="https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link"
-fileName='D:\dionigi\Documents\Python scripts\RunningStats\RunningStat.xlsx'
+path1="Path to your folder with the downloaded images"
+url="Gogle Drive url"
+fileName='Your excel spreadsheet'
 dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,"Date":str})
 new=True #Turn to False to just see the graphs and not add any new element
 print("Working")
@@ -35,7 +35,7 @@ def main():
     return "Done"
 
 def download():
-   flush("D:\dionigi\Documents\Python scripts\RunningStats\RunningStats")
+   flush("Path to your folder with the downloaded images")
    f= gdown.download_folder(url)
    return 
 
