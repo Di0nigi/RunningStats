@@ -32,7 +32,7 @@ def main():
     
 
 
-    return #formatted
+    return "Done"
 
 def download():
    flush("D:\dionigi\Documents\Python scripts\RunningStats\RunningStats")
@@ -60,7 +60,7 @@ def resize(path):
     flush="dataFlush"
     p=getVpath(path)
     name=p[0]
-    Vpath=p[1]
+    #Vpath=""
     img= cv2.imread(path)
    # src_points=[[7, 807], [5, 1188], [908, 1180], [901, 814]]
     src_float = np.array([[11, 963], [6, 1389], [1072, 1383], [1061, 954]], dtype=np.float32)
@@ -70,7 +70,7 @@ def resize(path):
                     [800,0]], dtype=np.float32)
     H = cv2.getPerspectiveTransform(src_float, dst_points)
     output_img = cv2.warpPerspective(img, H, (800, 500))
-    final=os.path.join(Vpath,flush,name)
+    final=os.path.join(flush,name)
     b=cv2.imwrite(final,img=output_img)
     #print(b)
 
