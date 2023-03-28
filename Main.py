@@ -13,7 +13,7 @@ path1="D:\dionigi\Documents\Python scripts\RunningStats\RunningStats"
 url="https://drive.google.com/drive/folders/1sziH7NzIL4B4Y2ythZQYkyupOe9X_Wj5?usp=share_link"
 fileName='D:\dionigi\Documents\Python scripts\RunningStats\RunningStat.xlsx'
 dataframe1 = pd.read_excel(fileName,dtype={ "Distance":str,"Time":str, "Min/KM":str, "Kcal":str,"Date":str})
-new=False
+new=True #Turn to False to just see the graphs and not add any new element
 print("Working")
 
 
